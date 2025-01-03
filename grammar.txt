@@ -1,0 +1,66 @@
+block =  statement*                     # Sequence of statements
+
+statement = assignment                   # Statement (assignment or expression)
+          | expression
+          | conditional
+          | for_loop
+
+for_loop = "for" IDENTIFIER "in" range "do" block "end"
+
+assignment = IDENTIFIER -> expression     # Assigning an expression to a variable
+
+conditional = if expression \n block \n (else block \n)? end # If then else then end
+
+expression = Level1                      # Normal expression
+
+
+Level1 = Level1 && Level2                # Logical AND
+       | Level1 || Level2                # Logical OR
+       | Level2
+
+Level2 = Level2 == Level3                # Equality
+       | Level2 != Level3                # Inequality
+       | Level2 < Level3                 # Less than
+       | Level2 > Level3                 # Greater than
+       | Level2 <= Level3                # Less than or equal
+       | Level2 >= Level3                # Greater than or equal
+       | Level3
+
+Level3 = Level3 + Level4                 # Addition
+       | Level3 - Level4                 # Subtraction
+       | Level4
+
+Level4 = Level4 * Level5                 # Multiplication
+       | Level4 / Level5                 # Division
+       | Level4 % Level5                 # Modulus
+       | Level4 ** Level5                # Exponentiation
+       | Level5
+
+Level5 = Level5 & Level6                 # Bitwise AND
+       | Level5 | Level6                 # Bitwise OR
+       | Level5 ^ Level6                 # Bitwise XOR
+       | Level5 << Level6                # Left shift
+       | Level5 >> Level6                # Right shift
+       | Level6
+
+Level6 = !Level6                         # Logical NOT
+       | -Level6                         # Negation
+       | ~Level6                         # Bitwise NOT
+       | Level7
+
+Level7 = float(Level7)                   # Casting float
+       | int(Level7)                     # Casting int
+       | Level8
+
+Level8 = (expression)                    # Parentheses for grouping
+       | IDENTIFIER                      # Variable
+       | INTEGER                         # Primitives
+       | FLOAT
+       | BOOLEAN
+       | STRING
+       | #[expression, expression]       # RValue
+       | [expression, expression]        # LValue
+       | sum([expression, expression], [expression, expression])  # sum function
+       | mean([expression, expression], [expression, expression]) # mean function
+       | min([expression, expression], [expression, expression])  # min function
+       | max([expression, expression], [expression, expression])  # max function
